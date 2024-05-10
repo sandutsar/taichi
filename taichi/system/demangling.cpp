@@ -9,7 +9,7 @@
 #include <cxxabi.h>
 #endif
 
-TI_NAMESPACE_BEGIN
+namespace taichi {
 
 // From https://en.wikipedia.org/wiki/Name_mangling
 
@@ -18,7 +18,7 @@ std::string cpp_demangle(const std::string &mangled_name) {
   char *demangled_name;
   int status = -1;
   demangled_name =
-      abi::__cxa_demangle(mangled_name.c_str(), NULL, NULL, &status);
+      abi::__cxa_demangle(mangled_name.c_str(), nullptr, nullptr, &status);
   std::string ret(demangled_name);
   free(demangled_name);
   return ret;
@@ -28,7 +28,7 @@ std::string cpp_demangle(const std::string &mangled_name) {
 }
 
 class Demangling : public Task {
-  virtual std::string run(const std::vector<std::string> &parameters) {
+  std::string run(const std::vector<std::string> &parameters) override {
     if (parameters.size() == 0) {
       printf("There should be at least one parameter for demangling.\n");
     }
@@ -45,4 +45,4 @@ class Demangling : public Task {
 
 TI_IMPLEMENTATION(Task, Demangling, "demangle")
 
-TI_NAMESPACE_END
+}  // namespace taichi
